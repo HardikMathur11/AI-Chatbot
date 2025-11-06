@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
-import { server } from "../main";
+import { server } from "../config";
 import toast from "react-hot-toast";
 
 const ChatContext = createContext();
@@ -69,7 +69,16 @@ export const ChatProvider = ({ children }) => {
       });
 
       setChats(data);
-      setSelected(data[0]._id);
+      if (data && data.length > 0) {
+        setSelected(data[0]._id);
+      } else {
+        // auto-create a chat if none exist yet
+        try {
+          await createChat();
+        } catch (_) {
+          // swallow; createChat already toasts on error
+        }
+      }
     } catch (error) {
       console.log(error);
     }
@@ -137,6 +146,7 @@ export const ChatProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+     if (!selected) return; 
     fetchMessages();
   }, [selected]);
   return (
