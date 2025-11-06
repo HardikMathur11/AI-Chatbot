@@ -56,7 +56,7 @@ const sendMail = async (email, subject, otp) => {
 </body>
 </html>
 `;
-
+console.log("sending mail...")
   await transport.sendMail({
     from: process.env.Gmail,
     to: email,
@@ -64,5 +64,6 @@ const sendMail = async (email, subject, otp) => {
     html,
   });
 };
+
 
 export default sendMail;
