@@ -1,0 +1,29 @@
+{
+  "name": "ai-chatbot-backend",
+  "version": "1.0.0",
+  "description": "AI Chatbot Backend API",
+  "repository": "https://github.com/yourusername/ai-chatbot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "env": {
+    "MONGO_URI": {
+      "description": "MongoDB connection string",
+      "required": true
+    },
+    "Jwt_sec": {
+      "description": "JWT secret key for authentication",
+      "required": true
+    },
+    "FRONTEND_URL": {
+      "description": "Frontend URL for CORS",
+      "value": "https://your-frontend-domain.vercel.app"
+    },
+    "NODE_ENV": {
+      "description": "Environment mode",
+      "value": "production"
+    }
+  }
+}

@@ -2,26 +2,76 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDb from "./database/db.js";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 
-// using middleware
-app.use(express.json());
-app.use(cors());
+// Enhanced CORS configuration for deployment
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || ["http://localhost:5173", "http://localhost:3000"],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+};
 
-//importing routes
+// using middleware
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(cors(corsOptions));
+
+// Health check endpoint for deployment
+app.get("/health", (req, res) => {
+  res.status(200).json({ 
+    status: "OK", 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || "development"
+  });
+});
+
+// Root endpoint
+app.get("/", (req, res) => {
+  res.json({ 
+    message: "AI Chatbot API is running",
+    version: "1.0.0",
+    environment: process.env.NODE_ENV || "development"
+  });
+});
+
+
 import userRoutes from "./routes/userRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
 
-//using routes
+
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ 
+    message: "Something went wrong!",
+    error: process.env.NODE_ENV === "development" ? err.message : "Internal server error"
+  });
+});
+
+// 404 handler
+app.use("*", (req, res) => {
+  res.status(404).json({ message: "API endpoint not found" });
+});
+
 const PORT = parseInt((process.env.PORT || "5000").toString().trim(), 10) || 5000;
 
-app.listen(PORT, () => {
-  console.log(`server is working on port ${PORT}`);
-  connectDb();
+connectDb().then(() => {
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(` Server is running on port ${PORT} in ${process.env.NODE_ENV || "development"} mode`);
+  });
+}).catch((error) => {
+  console.error(" Database connection failed:", error);
+  process.exit(1);
 });

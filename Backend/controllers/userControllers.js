@@ -1,81 +1,132 @@
-import sendMail from "../middlewares/sendMail.js";
 import { User } from "../models/User.js";
 import jwt from "jsonwebtoken";
 
-export const loginUser = async (req, res) => {
+export const registerUser = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { name, email, password } = req.body;
 
-    let user = await User.findOne({ email });
-
-    if (!user) {
-      user = await User.create({
-        email,
+    // Validation
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        message: "Please provide name, email, and password",
       });
     }
 
-    const otp = Math.floor(Math.random() * 1000000);
+    if (password.length < 6) {
+      return res.status(400).json({
+        message: "Password must be at least 6 characters long",
+      });
+    }
 
-    const ACTIVATION_SECRET = (process.env.Activation_sec || "dev-activation-secret").toString().trim();
-    const verifyToken = jwt.sign({ user, otp }, ACTIVATION_SECRET, {
-      expiresIn: "5m",
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        message: "User already exists with this email",
+      });
+    }
+
+    // Create new user
+    const user = await User.create({
+      name,
+      email,
+      password,
     });
 
-    await sendMail(email, "ChatBot", otp);
+    // Generate JWT token
+    const JWT_SECRET = (process.env.Jwt_sec || "dev-jwt-secret").toString().trim();
+    const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
-    res.json({
-      message: "Otp send to your mail",
-      verifyToken,
+    res.status(201).json({
+      message: "User registered successfully",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+      token,
     });
   } catch (error) {
+    console.error("Registration error:", error);
     res.status(500).json({
-      message: error.message,
+      message: "Registration failed",
+      error: error.message,
     });
   }
 };
 
-export const verifyUser = async (req, res) => {
+export const loginUser = async (req, res) => {
   try {
-    const { otp, verifyToken } = req.body;
+    const { email, password } = req.body;
 
-    const ACTIVATION_SECRET = (process.env.Activation_sec || "dev-activation-secret").toString().trim();
-    const verify = jwt.verify(verifyToken, ACTIVATION_SECRET);
-
-    if (!verify)
+    // Validation
+    if (!email || !password) {
       return res.status(400).json({
-        message: "Otp Expired",
+        message: "Please provide email and password",
       });
+    }
 
-    if (verify.otp !== otp)
-      return res.status(400).json({
-        message: "Wrong otp",
+    // Find user
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({
+        message: "Invalid email or password",
       });
+    }
 
+    // Check password
+    const isPasswordValid = await user.comparePassword(password);
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        message: "Invalid email or password",
+      });
+    }
+
+    // Generate JWT token
     const JWT_SECRET = (process.env.Jwt_sec || "dev-jwt-secret").toString().trim();
-    const token = jwt.sign({ _id: verify.user._id }, JWT_SECRET, {
-      expiresIn: "5d",
+    const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+      expiresIn: "7d",
     });
 
     res.json({
-      message: "Logged in successfully",
-      user: verify.user,
+      message: "Login successful",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      },
       token,
     });
   } catch (error) {
+    console.error("Login error:", error);
     res.status(500).json({
-      message: error.message,
+      message: "Login failed",
+      error: error.message,
     });
   }
 };
 
 export const myProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user._id).select("-password");
 
-    res.json(user);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    res.json({
+      message: "Profile fetched successfully",
+      user,
+    });
   } catch (error) {
+    console.error("Profile error:", error);
     res.status(500).json({
-      message: error.message,
+      message: "Failed to fetch profile",
+      error: error.message,
     });
   }
 };

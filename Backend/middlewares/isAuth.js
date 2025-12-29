@@ -17,8 +17,19 @@ export const isAuth = async (req, res, next) => {
 
     next();
   } catch (error) {
+    if (error.name === "JsonWebTokenError") {
+  
+      return res
+        .status(401)
+        .json({ message: "Invalid token. Please log in again." });
+    }
+    if (error.name === "TokenExpiredError") {
+      return res
+        .status(401)
+        .json({ message: "Your session has expired. Please log in again." });
+    }
     res.status(500).json({
-      message: "Login First",
+      message: "An unexpected error occurred during authentication.",
     });
   }
 };
