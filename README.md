@@ -4,10 +4,7 @@
 > A premium, intelligent chat interface powered by Google's Gemini Pro, designed for developers and creators who demand speed, aesthetics, and capability.
 
 ![Project Preview]
-(<img width="800" height="450" alt="image" src="https://github.com/user-attachments/assets/8015be6d-2683-4b4d-8e72-413521499599" />
-
-
-)
+(<img width="800" height="450" alt="image" src="https://github.com/user-attachments/assets/8015be6d-2683-4b4d-8e72-413521499599" />)
 
 
 ---
