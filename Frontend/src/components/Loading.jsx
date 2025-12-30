@@ -6,10 +6,10 @@ export const LoadingSpinner = () => {
 
 export const LoadingBig = () => {
   return (
-    <div className="flex space-x-2 justify-center items-center w=[200px] m-auto mt-[300px]">
-      <div className="h-8 w-8 bg-gradient-to-br from-indigo-500 to-sky-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-      <div className="h-8 w-8 bg-gradient-to-br from-fuchsia-500 to-pink-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-      <div className="h-8 w-8 bg-gradient-to-br from-emerald-500 to-lime-500 rounded-full animate-bounce"></div>
+    <div className="flex space-x-2 justify-center items-center w-full h-[60vh]">
+      <div className="h-4 w-4 bg-indigo-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+      <div className="h-4 w-4 bg-purple-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+      <div className="h-4 w-4 bg-pink-500 rounded-full animate-bounce"></div>
     </div>
   );
 };

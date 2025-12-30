@@ -74,6 +74,14 @@ export const UserProvider = ({ children }) => {
     }
   }
 
+  function logoutHandler() {
+    localStorage.removeItem("token");
+    setIsAuth(false);
+    setUser([]);
+    toast.success("Logged out successfully");
+    navigate("/login");
+  }
+
   const [loading, setLoading] = useState(true);
 
   async function fetchUser() {
@@ -107,6 +115,7 @@ export const UserProvider = ({ children }) => {
         btnLoading,
         loading,
         registerUser,
+        logoutHandler,
       }}
     >
       {children}

@@ -57,6 +57,39 @@ export const ChatProvider = ({ children }) => {
           },
         }
       );
+
+      // Generate Title on First Message
+      if (messages.length === 0) {
+        // We don't await this to keep the UI snappy
+        const genTitle = async () => {
+          try {
+            const titlePrompt = `Generate a concise, professional, 3-5 word title for a chat that starts with this prompt: "${prompt}". Do not use quotes or "Title:".`;
+            const titleResponse = await axios({
+              url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+              method: "post",
+              data: {
+                contents: [{ parts: [{ text: titlePrompt }] }],
+              },
+            });
+            const newTitle = titleResponse["data"]["candidates"][0]["content"]["parts"][0]["text"].trim();
+
+            await axios.put(
+              `${server}/api/chat/${selected}`,
+              { title: newTitle },
+              {
+                headers: {
+                  token: localStorage.getItem("token"),
+                },
+              }
+            );
+            fetchChats(); // Refresh sidebar
+          } catch (err) {
+            console.log("Title generation failed", err);
+          }
+        };
+        genTitle();
+      }
+
     } catch (error) {
       toast.error("something went wrong");
       console.log(error?.response?.data || error.message);
