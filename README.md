@@ -3,8 +3,8 @@
 > **Experience the future of conversation.**  
 > A premium, intelligent chat interface powered by Google's Gemini Pro, designed for developers and creators who demand speed, aesthetics, and capability.
 
-![Project Preview](https://via.placeholder.com/800x450.png?text=Nexus+AI+Preview)
-*(Replace this link with a real screenshot of your app!)*
+![Project Preview](https://ai-chatbot-five-wheat-89.vercel.app/)
+
 
 ---
 
@@ -82,14 +82,6 @@ npm run dev
 # Open http://localhost:5173 to view it in the browser
 ```
 
----
-
-## 📸 Screen Gallery
-
-| **Smart Chat Interface** | **Mobile Responsive** |
-|:---:|:---:|
-| ![Chat](https://via.placeholder.com/400x300?text=Chat+Interface) | ![Mobile](https://via.placeholder.com/400x300?text=Mobile+View) |
-*(Add your own screenshots inside the `public` folder or host them on Imgur!)*
 
 ---
 
@@ -115,6 +107,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
   <p>Built with ❤️ by <b>Hardik Mathur</b></p>
   <p>
     <a href="https://github.com/HardikMathur11">GitHub</a> • 
-    <a href="https://linkedin.com">LinkedIn</a>
+    <a href="www.linkedin.com/in/hardik-mathur-5a80a82ba">LinkedIn</a>
   </p>
 </div>
