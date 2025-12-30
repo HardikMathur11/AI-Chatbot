@@ -3,7 +3,8 @@
 > **Experience the future of conversation.**  
 > A premium, intelligent chat interface powered by Google's Gemini Pro, designed for developers and creators who demand speed, aesthetics, and capability.
 
-![Project Preview](<img width="1918" height="887" alt="image" src="https://github.com/user-attachments/assets/3a936838-109b-4dfe-b513-0e2701562d30" />
+(<img width="1918" height="887" alt="image" src="https://github.com/user-attachments/assets/489e364e-2feb-495c-949c-b66435ccf0a3" />
+
 )
 
 
