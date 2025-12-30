@@ -105,3 +105,28 @@ export const deleteChat = async (req, res) => {
     });
   }
 };
+
+export const renameChat = async (req, res) => {
+  try {
+    const chat = await Chat.findById(req.params.id);
+
+    if (!chat)
+      return res.status(404).json({
+        message: "No chat with this id",
+      });
+
+    if (chat.user.toString() !== req.user._id.toString())
+      return res.status(403).json({
+        message: "Unauthorized",
+      });
+
+    chat.title = req.body.title;
+    await chat.save();
+
+    res.json(chat);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};

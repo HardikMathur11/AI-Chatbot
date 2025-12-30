@@ -11,6 +11,10 @@ const schema = new mongoose.Schema(
       type: String,
       default: "New Chat",
     },
+    title: {
+      type: String,
+      default: "New Chat",
+    },
   },
   {
     timestamps: true,
