@@ -42,23 +42,23 @@ app.get("/", (req, res) => {
     version: "1.0.0",
     environment: process.env.NODE_ENV || "development"
   });
+});
 
-  app.get("/test-db", async (req, res) => {
-    try {
-      const { User } = await import("./models/User.js");
-      const count = await User.countDocuments();
-      res.json({
-        message: "Database connection successful",
-        userCount: count,
-        dbState: mongoose.connection.readyState
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: "Database check failed",
-        error: error.message
-      });
-    }
-  });
+app.get("/test-db", async (req, res) => {
+  try {
+    const { User } = await import("./models/User.js");
+    const count = await User.countDocuments();
+    res.json({
+      message: "Database connection successful",
+      userCount: count,
+      dbState: mongoose.connection.readyState
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Database check failed",
+      error: error.message
+    });
+  }
 });
 
 
