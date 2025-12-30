@@ -58,20 +58,6 @@ const Login = () => {
                 required
               />
             </div>
-            <div>
-              <label className="block text-slate-300 text-sm font-medium mb-2" htmlFor="email">
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-[#1e1e21] border border-[#3f3f46] rounded-lg px-4 py-3 text-sm text-slate-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder:text-slate-500"
-                placeholder="name@example.com"
-                required
-              />
-            </div>
 
             <div>
               <label className="block text-slate-300 text-sm font-medium mb-2" htmlFor="password">
