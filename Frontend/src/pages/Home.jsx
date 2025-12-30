@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { CgProfile } from "react-icons/cg";
 import { ChatData } from "../context/ChatContext";
 import { FaArrowUp, FaRobot, FaUser } from "react-icons/fa";
 import { LoadingBig, LoadingSmall } from "../components/Loading";
@@ -93,7 +94,7 @@ const Home = () => {
             </div>
           ) : (
             <div
-              className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 thin-scrollbar scroll-smooth pb-60"
+              className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 thin-scrollbar scroll-smooth pb-44"
               ref={messagecontainerRef}
             >
               {loading ? (
@@ -105,20 +106,20 @@ const Home = () => {
                       <div key={i} className="max-w-4xl mx-auto space-y-6">
                         {/* User Message */}
                         <div className="flex flex-row-reverse gap-4 animate-fadeUp">
-                          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
-                            <CgProfile size={20} />
+                          <div className="flex-shrink-0 h-9 w-9 rounded-full bg-indigo-600 flex items-center justify-center text-white">
+                            <FaUser size={16} />
                           </div>
-                          <div className="bg-gradient-to-br from-indigo-500 to-violet-600 text-white px-6 py-3.5 rounded-2xl rounded-tr-sm shadow-md max-w-[85%] md:max-w-[75%] leading-relaxed selection:bg-white/30">
+                          <div className="bg-[#2f2f2f] text-slate-100 px-6 py-3.5 rounded-3xl max-w-[85%] md:max-w-[75%] leading-relaxed">
                             {e.question}
                           </div>
                         </div>
 
                         {/* AI Message */}
                         <div className="flex gap-4 animate-fadeUp" style={{ animationDelay: '0.1s' }}>
-                          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-sky-500 shadow-sm mt-1">
-                            <FaRobot size={20} />
+                          <div className="flex-shrink-0 h-9 w-9 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 mt-1 border border-emerald-500/20">
+                            <FaRobot size={18} />
                           </div>
-                          <div className="bg-white/60 backdrop-blur-md border border-white/50 text-slate-800 px-6 py-4 rounded-2xl rounded-tl-sm shadow-sm w-full prose prose-slate max-w-none">
+                          <div className="text-slate-100 w-full prose prose-invert prose-p:text-slate-100 prose-li:text-slate-100 max-w-none">
                             <MarkdownRenderer content={e.answer} />
                           </div>
                         </div>
@@ -148,14 +149,14 @@ const Home = () => {
 
         {/* Input Area */}
         {chats && chats.length > 0 && (
-          <div className="p-4 md:p-6 fixed md:absolute bottom-0 left-0 md:left-auto right-0 z-30 w-full mb-6">
+          <div className="fixed bottom-0 right-0 z-30 w-full md:w-[calc(100%-18rem)] bg-[#0f0f12]/90 backdrop-blur-lg border-t border-[#27272a] p-4">
             <div className="max-w-4xl mx-auto">
               <form
                 onSubmit={submitHandler}
-                className="relative flex items-center gap-2 bg-[#1e1e21] border border-[#3f3f46] p-2 rounded-2xl shadow-lg shadow-black/50 transform transition-all focus-within:ring-1 focus-within:ring-indigo-500/50"
+                className="relative flex items-center gap-2 bg-[#1e1e21] border border-[#3f3f46] p-2 rounded-xl shadow-lg shadow-black/50 focus-within:ring-1 focus-within:ring-indigo-500/50 transition-all"
               >
                 <textarea
-                  className="flex-grow p-4 bg-transparent outline-none text-slate-200 placeholder:text-slate-500 text-lg resize-none thin-scrollbar"
+                  className="flex-grow p-3 bg-transparent outline-none text-slate-100 placeholder:text-slate-500 text-lg resize-none thin-scrollbar leading-relaxed"
                   placeholder="Write what you want to explore..."
                   rows={1}
                   value={prompt}
@@ -170,12 +171,12 @@ const Home = () => {
 
                 <button
                   disabled={newRequestLoading || !prompt.trim()}
-                  className="absolute bottom-3 right-3 p-1.5 rounded-lg bg-indigo-600 text-white disabled:bg-[#27272a] disabled:text-slate-500 hover:bg-indigo-500 transition-all flex items-center justify-center"
+                  className="p-3 rounded-lg bg-indigo-600 text-white disabled:bg-[#27272a] disabled:text-slate-500 hover:bg-indigo-500 transition-all flex items-center justify-center shrink-0"
                 >
-                  {newRequestLoading ? <LoadingSmall /> : <FaArrowUp size={14} />}
+                  {newRequestLoading ? <LoadingSmall /> : <FaArrowUp size={16} />}
                 </button>
               </form>
-              <p className="text-center text-xs text-slate-600 mt-2">
+              <p className="text-center text-xs text-slate-500 mt-2">
                 Nexus AI can make mistakes. Verify important information.
               </p>
             </div>

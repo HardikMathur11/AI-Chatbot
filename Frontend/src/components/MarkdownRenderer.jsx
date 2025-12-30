@@ -57,13 +57,13 @@ const MarkdownRenderer = ({ content }) => {
           return <tr className="hover:bg-white/5 transition-colors">{children}</tr>;
         },
         p({ children }) {
-          return <p className="mb-4 leading-relaxed">{children}</p>;
+          return <p className="mb-6 leading-relaxed text-slate-100 last:mb-0">{children}</p>;
         },
         ul({ children }) {
-          return <ul className="list-disc list-inside mb-4 space-y-1">{children}</ul>;
+          return <ul className="list-disc list-inside mb-6 space-y-2 text-slate-100 last:mb-0">{children}</ul>;
         },
         ol({ children }) {
-          return <ol className="list-decimal list-inside mb-4 space-y-1">{children}</ol>;
+          return <ol className="list-decimal list-inside mb-4 space-y-1 text-slate-100">{children}</ol>;
         }
       }}
     >
