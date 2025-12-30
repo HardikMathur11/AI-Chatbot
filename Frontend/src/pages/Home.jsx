@@ -50,7 +50,7 @@ const Home = () => {
       </div>
       <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
 
-      <div className="flex flex-1 flex-col">
+      <div className={`flex flex-1 flex-col transition-all duration-300 md:ml-0 ${isOpen ? 'ml-64' : ''}`}>
         <button
           onClick={toggleSidebar}
           className="md:hidden p-4 bg-white/70 backdrop-blur rounded-b-xl text-2xl border-b border-slate-200"

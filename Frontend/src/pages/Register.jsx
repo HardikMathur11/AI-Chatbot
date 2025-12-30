@@ -3,18 +3,32 @@ import { UserData } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { LoadingSpinner } from "../components/Loading";
 
-const Login = () => {
+const Register = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const { loginUser, btnLoading } = UserData();
+  const { registerUser, btnLoading } = UserData();
 
   const navigate = useNavigate();
 
   const submitHandler = (e) => {
     e.preventDefault();
-    loginUser(email, password, navigate);
+    
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+    
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters long!");
+      return;
+    }
+    
+    registerUser(name, email, password, navigate);
   };
+  
   return (
     <div className="flex justify-center items-center h-screen p-4">
       <div className="card-glass w-full max-w-6xl md:min-h-[70vh] overflow-hidden grid grid-cols-1 md:grid-cols-2">
@@ -22,16 +36,32 @@ const Login = () => {
           <div className="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-white/20 blur-2xl animate-floaty"></div>
           <div className="absolute -bottom-8 -right-10 h-48 w-48 rounded-full bg-white/20 blur-2xl animate-floaty" style={{animationDelay:'.6s'}}></div>
           <div className="h-16 w-16 rounded-2xl bg-white/20 backdrop-blur mb-4"></div>
-          <h3 className="text-2xl font-semibold">Welcome to ChatBot</h3>
+          <h3 className="text-2xl font-semibold">Join ChatBot</h3>
           <p className="text-white/90 text-sm mt-1 text-center">
-            Sign in with your email to continue your conversations.
+            Create your account to start chatting with AI.
           </p>
         </div>
         <form className="p-10 md:p-12" onSubmit={submitHandler}>
           <div className="mb-6">
-            <h2 className="text-3xl font-semibold text-slate-900">Login</h2>
-            <p className="text-slate-600 text-sm mt-1">Enter your email to continue</p>
+            <h2 className="text-3xl font-semibold text-slate-900">Register</h2>
+            <p className="text-slate-600 text-sm mt-1">Create your account to continue</p>
           </div>
+          
+          <div className="mb-4">
+            <label className="block text-slate-700 mb-2" htmlFor="name">
+              Full Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="input-glass p-3 w-full"
+              placeholder="John Doe"
+              required
+            />
+          </div>
+
           <div className="mb-4">
             <label className="block text-slate-700 mb-2" htmlFor="email">
               Email
@@ -47,7 +77,7 @@ const Login = () => {
             />
           </div>
 
-          <div className="mb-6">
+          <div className="mb-4">
             <label className="block text-slate-700 mb-2" htmlFor="password">
               Password
             </label>
@@ -62,19 +92,34 @@ const Login = () => {
             />
           </div>
 
+          <div className="mb-6">
+            <label className="block text-slate-700 mb-2" htmlFor="confirmPassword">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="input-glass p-3 w-full"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+
           <button className="btn-primary w-full py-3" disabled={btnLoading}>
-            {btnLoading ? <LoadingSpinner /> : "Login"}
+            {btnLoading ? <LoadingSpinner /> : "Create Account"}
           </button>
           
           <div className="mt-6 text-center">
             <p className="text-slate-600 text-sm">
-              Don't have an account?{" "}
+              Already have an account?{" "}
               <button
                 type="button"
-                onClick={() => navigate("/register")}
+                onClick={() => navigate("/login")}
                 className="text-indigo-600 hover:text-indigo-700 font-medium"
               >
-                Register here
+                Login here
               </button>
             </p>
           </div>
@@ -84,4 +129,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

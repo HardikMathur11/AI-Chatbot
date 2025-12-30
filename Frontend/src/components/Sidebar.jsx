@@ -16,8 +16,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   };
 
   const clickEvent = (id) => {
-    setSelected(id);
-    toggleSidebar();
+    if (id) {
+      setSelected(id);
+      toggleSidebar();
+    } else {
+      console.warn("Invalid chat ID provided to clickEvent");
+    }
   };
   return (
     <div
@@ -60,7 +64,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 onClick={() => clickEvent(e._id)}
               >
                 <span className={`truncate ${selected === e._id ? 'text-slate-900' : 'text-slate-700 group-hover:text-slate-900'}`}>
-                  {e.latestMessage.slice(0, 38)}...
+                  {e.latestMessage ? e.latestMessage.slice(0, 38) + '...' : 'No messages yet'}
                 </span>
                 <button
                   className="text-xl px-3 py-2 btn-outline-danger"

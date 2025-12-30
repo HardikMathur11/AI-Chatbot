@@ -4,15 +4,18 @@ import App from "./App.jsx";
 import "./index.css";
 import { UserProvider } from "./context/UserContext.jsx";
 import { ChatProvider } from "./context/ChatContext.jsx";
+import { BrowserRouter } from "react-router-dom";
 
-export const server = "http://localhost:5000";
+export const server = import.meta.env.VITE_SERVER_URL || "http://localhost:5000";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <UserProvider>
-      <ChatProvider>
-        <App />
-      </ChatProvider>
-    </UserProvider>
+    <BrowserRouter>
+      <UserProvider>
+        <ChatProvider>
+          <App />
+        </ChatProvider>
+      </UserProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );

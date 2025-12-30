@@ -1,7 +1,8 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
-import { server } from "../config";
 import toast from "react-hot-toast";
+
+import { server } from "../main";
 
 const ChatContext = createContext();
 
@@ -16,11 +17,18 @@ export const ChatProvider = ({ children }) => {
       toast.error("Select or create a chat first");
       return;
     }
+
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    if (!apiKey) {
+      toast.error("API key is not configured");
+      return;
+    }
+
     setNewRequestLoading(true);
     setPrompt("");
     try {
       const response = await axios({
-        url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
+        url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
         method: "post",
         data: {
           contents: [{ parts: [{ text: prompt }] }],
@@ -102,7 +110,8 @@ export const ChatProvider = ({ children }) => {
       fetchChats();
       setCreateLod(false);
     } catch (error) {
-      toast.error("something went wrong");
+      console.error("Error creating chat:", error.response ? error.response.data : error.message);
+      toast.error("Something went wrong while creating a new chat.");
       setCreateLod(false);
     }
   }
@@ -146,7 +155,7 @@ export const ChatProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-     if (!selected) return; 
+    if (!selected) return;
     fetchMessages();
   }, [selected]);
   return (
@@ -173,4 +182,10 @@ export const ChatProvider = ({ children }) => {
   );
 };
 
-export const ChatData = () => useContext(ChatContext);
+export const ChatData = () => {
+  const context = useContext(ChatContext);
+  if (!context) {
+    throw new Error("ChatData must be used within a ChatProvider");
+  }
+  return context;
+};
