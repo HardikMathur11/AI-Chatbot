@@ -94,7 +94,7 @@ const Home = () => {
             </div>
           ) : (
             <div
-              className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 thin-scrollbar scroll-smooth pb-44"
+              className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 thin-scrollbar scroll-smooth pb-44 md:pb-32"
               ref={messagecontainerRef}
             >
               {loading ? (
@@ -149,14 +149,14 @@ const Home = () => {
 
         {/* Input Area */}
         {chats && chats.length > 0 && (
-          <div className="fixed bottom-0 right-0 z-30 w-full md:w-[calc(100%-18rem)] bg-[#0f0f12]/90 backdrop-blur-lg border-t border-[#27272a] p-4">
+          <div className="fixed bottom-0 right-0 z-30 w-full md:w-[calc(100%-18rem)] bg-[#0f0f12]/90 backdrop-blur-lg border-t border-[#27272a] p-3">
             <div className="max-w-4xl mx-auto">
               <form
                 onSubmit={submitHandler}
-                className="relative flex items-center gap-2 bg-[#1e1e21] border border-[#3f3f46] p-2 rounded-xl shadow-lg shadow-black/50 focus-within:ring-1 focus-within:ring-indigo-500/50 transition-all"
+                className="relative flex items-center gap-2 bg-[#1e1e21] border border-[#3f3f46] p-1.5 rounded-xl shadow-lg shadow-black/50 focus-within:ring-1 focus-within:ring-indigo-500/50 transition-all"
               >
                 <textarea
-                  className="flex-grow p-3 bg-transparent outline-none text-slate-100 placeholder:text-slate-500 text-lg resize-none thin-scrollbar leading-relaxed"
+                  className="flex-grow p-2.5 bg-transparent outline-none text-slate-100 placeholder:text-slate-500 text-base resize-none thin-scrollbar leading-relaxed"
                   placeholder="Write what you want to explore..."
                   rows={1}
                   value={prompt}
@@ -171,7 +171,7 @@ const Home = () => {
 
                 <button
                   disabled={newRequestLoading || !prompt.trim()}
-                  className="p-3 rounded-lg bg-indigo-600 text-white disabled:bg-[#27272a] disabled:text-slate-500 hover:bg-indigo-500 transition-all flex items-center justify-center shrink-0"
+                  className="p-2 rounded-lg bg-indigo-600 text-white disabled:bg-[#27272a] disabled:text-slate-500 hover:bg-indigo-500 transition-all flex items-center justify-center shrink-0"
                 >
                   {newRequestLoading ? <LoadingSmall /> : <FaArrowUp size={16} />}
                 </button>
