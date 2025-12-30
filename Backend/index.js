@@ -1,4 +1,5 @@
 import express from "express";
+import mongoose from "mongoose";
 import dotenv from "dotenv";
 import connectDb from "./database/db.js";
 import cors from "cors";
@@ -27,8 +28,8 @@ app.use(cors(corsOptions));
 
 // Health check endpoint for deployment
 app.get("/health", (req, res) => {
-  res.status(200).json({ 
-    status: "OK", 
+  res.status(200).json({
+    status: "OK",
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || "development"
   });
@@ -36,10 +37,27 @@ app.get("/health", (req, res) => {
 
 // Root endpoint
 app.get("/", (req, res) => {
-  res.json({ 
+  res.json({
     message: "AI Chatbot API is running",
     version: "1.0.0",
     environment: process.env.NODE_ENV || "development"
+  });
+
+  app.get("/test-db", async (req, res) => {
+    try {
+      const { User } = await import("./models/User.js");
+      const count = await User.countDocuments();
+      res.json({
+        message: "Database connection successful",
+        userCount: count,
+        dbState: mongoose.connection.readyState
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Database check failed",
+        error: error.message
+      });
+    }
   });
 });
 
@@ -54,7 +72,7 @@ app.use("/api/chat", chatRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ 
+  res.status(500).json({
     message: "Something went wrong!",
     error: process.env.NODE_ENV === "development" ? err.message : "Internal server error"
   });
