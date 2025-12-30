@@ -18,7 +18,7 @@ const corsOptions = {
   origin: [process.env.FRONTEND_URL, "https://ai-chatbot-five-wheat-89.vercel.app", "http://localhost:5173", "http://localhost:3000"].filter(Boolean),
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  allowedHeaders: ["Content-Type", "Authorization", "token"]
 };
 
 // using middleware
